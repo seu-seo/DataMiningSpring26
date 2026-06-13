@@ -15,7 +15,6 @@ sdist/
 wheels/
 *.egg-link
 .installed.cfg
-lib/
 lib64/
 
 # Virtual environments
@@ -49,3 +48,10 @@ Thumbs.db
 
 # SQLite DB (CSV에서 자동 생성되므로 추적 불필요)
 *.db
+.gstack/
+
+# Next.js
+.next/
+next-env.d.ts
+node_modules/
+.omc/
