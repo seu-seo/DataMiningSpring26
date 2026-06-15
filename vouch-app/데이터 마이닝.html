@@ -455,11 +455,11 @@
      + 0.15*consistency   + 0.10*engagement_stab          <span class="kw">AS</span> trust_score
 <span class="kw">FROM</span> (
   <span class="kw">SELECT</span> c.creator_id,
-         <span class="fn">SUM</span>(o.on_time)::float   / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> deadline_rate,
-         <span class="fn">AVG</span>(o.comm_rating) / 5.0                          <span class="kw">AS</span> comm_score,
-         <span class="fn">SUM</span>(o.delivered)::float / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> completion_rate,
-         <span class="fn">AVG</span>(1 - ch.cadence_cv)                            <span class="kw">AS</span> consistency,
-         <span class="fn">AVG</span>(ch.dau::float / <span class="fn">NULLIF</span>(ch.mau,0))             <span class="kw">AS</span> engagement_stab
+         <span class="fn">CAST</span>(<span class="fn">SUM</span>(o.on_time) <span class="kw">AS</span> FLOAT)   / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> deadline_rate,
+         <span class="fn">AVG</span>(o.comm_rating) / 5.0                                  <span class="kw">AS</span> comm_score,
+         <span class="fn">CAST</span>(<span class="fn">SUM</span>(o.delivered) <span class="kw">AS</span> FLOAT) / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> completion_rate,
+         <span class="fn">AVG</span>(1 - ch.cadence_cv)                                    <span class="kw">AS</span> consistency,
+         <span class="fn">AVG</span>(<span class="fn">CAST</span>(ch.dau <span class="kw">AS</span> FLOAT) / <span class="fn">NULLIF</span>(ch.mau,0))             <span class="kw">AS</span> engagement_stab
   <span class="kw">FROM</span> creators c
   <span class="kw">JOIN</span> channels  ch <span class="kw">ON</span> ch.creator_id = c.creator_id
   <span class="kw">JOIN</span> campaigns cm <span class="kw">ON</span> cm.creator_id = c.creator_id
