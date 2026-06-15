@@ -448,11 +448,13 @@
   <div class="sqltitle"><span class="s">① 신뢰도 집계</span> 크리에이터마다 신뢰 점수 계산</div>
   <p class="sqlsay">협업 결과·채널 데이터를 모아 마감·소통·이행·지속·점착에 가중치를 줘서 한 점수로 합쳐요.</p>
   <pre class="sql"><span class="kw">INSERT INTO</span> trust_metrics (creator_id, period, deadline_rate, comm_score,
-                           completion_rate, consistency, engagement_stab, trust_score)
+                           completion_rate, consistency, engagement_stab, trust_score,
+                           computed_at)
 <span class="kw">SELECT</span> creator_id, <span class="fn">'2026-Q2'</span>, deadline_rate, comm_score, completion_rate,
        consistency, engagement_stab,
        0.30*deadline_rate + 0.20*comm_score + 0.25*completion_rate
-     + 0.15*consistency   + 0.10*engagement_stab          <span class="kw">AS</span> trust_score
+     + 0.15*consistency   + 0.10*engagement_stab          <span class="kw">AS</span> trust_score,
+       <span class="fn">datetime</span>(<span class="fn">'now'</span>)                                  <span class="kw">AS</span> computed_at
 <span class="kw">FROM</span> (
   <span class="kw">SELECT</span> c.creator_id,
          <span class="fn">CAST</span>(<span class="fn">SUM</span>(o.on_time) <span class="kw">AS</span> FLOAT)   / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> deadline_rate,
