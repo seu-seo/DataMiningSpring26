@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리 프로젝트 × 수업 내용 (W10 추천시스템)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --ink:#1a1c22; --muted:#6b6f78; --faint:#9a9ea6;
+    --line:#ececea; --line2:#e0e0dc;
+    --accent:#7c3aed; --accent2:#db2777; --accent-ink:#5b21b6; --soft:#f4eefe;
+    --grad:linear-gradient(135deg,#7c3aed,#db2777);
+    --lec:#0f4c81; --lec-soft:#e9f1f8;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,monospace; --r:14px;
+  }
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard",sans-serif;font-size:16px;line-height:1.75}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px}
+  code{font-family:var(--mono);font-size:.88em;color:var(--accent-ink)}
+
+  header{padding:52px 0 10px;text-align:center}
+  .word{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:15px;margin-bottom:18px}
+  .word .v{width:26px;height:26px;border-radius:7px;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:14px}
+  .word b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  h1{font-size:32px;line-height:1.22;letter-spacing:-.03em;margin:0 0 12px;font-weight:800}
+  header p{color:var(--muted);margin:0;font-size:15.5px}
+  .meta{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.04em;margin-top:13px}
+
+  .hero{background:var(--soft);border:1px solid #e7dcfb;border-radius:18px;padding:20px 24px;margin:30px 0 6px}
+  .hero .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  .hero p{margin:8px 0 0;font-size:17px;line-height:1.65;font-weight:500}
+  .hero b{font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:48px 0 4px}
+  .lead{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:0 0 12px}
+  p.intro{margin:0 0 14px;color:#33363d;font-size:15px}
+
+  .omap{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:6px 0}
+  .omap .row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+  .omap .row:first-child{border-top:0}
+  .omap .h{background:#1c1d24;color:#fff;font-weight:600;font-size:12.5px;padding:9px 14px}
+  .omap .c{padding:9px 14px;font-size:13.5px}
+  .omap .c.l{background:var(--lec-soft);color:#123} .omap .c.r{background:#fff}
+  @media(max-width:620px){.omap .row{grid-template-columns:1fr}}
+
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+  @media(max-width:640px){.pair{grid-template-columns:1fr}}
+  .pane{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--surface)}
+  .pane.lec{background:var(--lec-soft);border-color:#cfe0ee}
+  .pane.ours{border-color:#e7dcfb}
+  .pane .tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    border-radius:999px;padding:3px 9px;margin-bottom:8px;font-weight:700}
+  .pane.lec .tag{color:var(--lec);background:#d8e6f2}
+  .pane.ours .tag{color:var(--accent-ink);background:var(--soft)}
+  .pane h3{margin:0 0 6px;font-size:15.5px;letter-spacing:-.01em}
+  .pane p{margin:5px 0;font-size:13.5px;color:#33363d}
+  .fx{font-family:var(--mono);background:#1c1d24;color:#eceaf4;border-radius:8px;padding:9px 12px;margin:8px 0 2px;
+    font-size:12.5px;text-align:center;overflow-x:auto}
+  .fx .frac{display:inline-block;vertical-align:middle;text-align:center;margin:0 2px}
+  .fx .frac .n{display:block;border-bottom:1px solid #8d8fa6;padding:0 6px 2px}
+  .fx .frac .d{display:block;padding:2px 6px 0}
+  .fx .hl{color:#c4b5fd} .fx .hl2{color:#f9a8d4}
+
+  .tip{font-size:13.5px;color:#3a3d44;background:#fffdf4;border:1px solid #f0e6c8;border-radius:10px;
+    padding:10px 13px;margin:10px 0}
+  .tip b{color:#9a6207}
+
+  .star{border:1px solid #e7dcfb;border-left:4px solid var(--accent);background:#fdfbff;border-radius:12px;padding:6px 16px 10px;margin:8px 0}
+  .star .badge{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:#fff;background:var(--grad);border-radius:999px;padding:3px 11px;margin:12px 0 2px;font-weight:700}
+  .star p{font-size:14px;margin:6px 0;color:#33363d}
+
+  .erd{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:10px 0}
+  .cap{font-size:12.5px;color:var(--muted);margin:8px 2px 0}
+
+  pre.sql{background:#1c1d24;color:#e9e7f2;border-radius:10px;border-left:3px solid var(--accent2);
+    padding:12px 14px;font-family:var(--mono);font-size:11.7px;line-height:1.5;white-space:pre;overflow-x:auto;margin:6px 0 0}
+  pre.sql .kw{color:#c4b5fd} pre.sql .fn{color:#f9a8d4} pre.sql .cm{color:#8a8d99}
+  .sqltitle{font-weight:700;font-size:14px;margin:16px 0 1px;display:flex;align-items:center;gap:8px}
+  .sqltitle .s{font-family:var(--mono);font-size:10.5px;color:var(--lec);background:var(--lec-soft);border-radius:6px;padding:2px 8px}
+  .sqlsay{font-size:13px;color:var(--muted);margin:3px 0 0}
+
+  table.map{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  table.map th{background:#1c1d24;color:#fff;text-align:left;padding:8px 11px;font-weight:600;font-size:12px}
+  table.map td{border:1px solid var(--line);padding:7px 11px;vertical-align:top}
+  table.map tr:nth-child(even) td{background:#fbfaf8}
+  table.map td.s{font-family:var(--mono);font-size:11px;color:var(--lec);white-space:nowrap}
+
+  .points{display:grid;gap:10px;margin:8px 0}
+  .pt{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 16px;font-size:14px}
+  .pt b{color:var(--accent-ink)}
+  .concl{background:var(--grad);color:#fff;border-radius:18px;padding:22px 26px;margin:18px 0 10px}
+  .concl .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;font-weight:700}
+  .concl p{margin:8px 0 0;font-size:17px;font-weight:500;line-height:1.6}
+  footer{color:var(--faint);font-size:12px;text-align:center;padding:26px 0 48px}
+  sub,sup{font-size:.72em} .i{font-style:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="word"><span class="v">V</span><b>Vouch</b> · 팀 공유</span>
+    <h1>우리 추천 시스템,<br>어떻게 동작하나</h1>
+    <p>추천 로직부터 데이터 설계(ERD)와 SQL까지, 핵심만 정리했어요.</p>
+    <div class="meta">Business Analytics &amp; Data Mining · 팀 프로젝트</div>
+  </header>
+
+  <h2>한눈에</h2>
+  <p class="lead">수업에서 배운 거 → 우리가 만든 거</p>
+  <p class="intro">먼저 큰 그림부터요. 왼쪽이 수업 개념, 오른쪽이 우리 프로젝트에서 그게 뭐가 됐는지예요.</p>
+  <div class="omap">
+    <div class="row"><div class="h">수업</div><div class="h">우리 프로젝트</div></div>
+    <div class="row"><div class="c l">효용 최대화 arg max u(c,s)</div><div class="c r">브랜드가 크리에이터를 고르는 문제로 바꿈</div></div>
+    <div class="row"><div class="c l">콘텐츠 · 협업 · 하이브리드</div><div class="c r">코사인 적합도 · 브랜드 유사도 협업필터 · 둘을 섞기</div></div>
+    <div class="row"><div class="c l">Contextual Modeling (U×I×C→R)</div><div class="c r"><b>신뢰도를 ‘맥락’으로 추가</b> → utility = rel·trust<sup>β</sup></div></div>
+    <div class="row"><div class="c l">ERD 기반 데이터 설계</div><div class="c r">테이블 8개로 데이터 설계 + SQL로 추출</div></div>
+    <div class="row"><div class="c l">RIG · A/B Test</div><div class="c r">신뢰도 넣기 전/후 비교로 효과 검증</div></div>
+  </div>
+
+  <h2>1. 추천이 뭐였더라</h2>
+  <p class="lead">‘효용이 제일 큰 걸 골라준다’</p>
+  <p class="intro">수업 맨 처음에 나왔던 그 식이에요. “고객한테 효용이 가장 큰 아이템을 추천해라.” 우리는 고객 자리에 브랜드를, 아이템 자리에 크리에이터를 넣었을 뿐이에요.</p>
+  <div class="pair">
+    <div class="pane lec"><span class="tag">수업에서</span>
+      <h3>효용 최대화</h3>
+      <div class="fx">s′<sub>c</sub> = arg max<sub>s∈S</sub> u(c, s)</div>
+      <p>고객 c한테 효용 u가 가장 큰 아이템 s를 골라주는 게 추천이다 — 라고 배웠죠.</p>
+    </div>
+    <div class="pane ours"><span class="tag">우리 프로젝트</span>
+      <h3>브랜드 → 크리에이터</h3>
+      <div class="fx">k* = arg max<sub>k∈K</sub> u(b, k)</div>
+      <p>브랜드 b한테 효용이 가장 큰 크리에이터 k를 추천. 코드의 <code>recommend()</code>가 점수 매겨 정렬하는 게 딱 이거예요.</p>
+    </div>
+  </div>
+  <div class="tip"><b>쉽게 말하면</b> — 결국 “브랜드 입장에서 제일 좋은 크리에이터부터 줄 세우기”예요. 그 ‘제일 좋은’을 무엇으로 정의하느냐가 아래 내용 전부고요.</div>
+
+  <h2>2. 점수 매기는 방법 세 가지</h2>
+  <p class="lead">콘텐츠 · 협업 · 하이브리드 (수업 그대로)</p>
+
+  <div class="pair">
+    <div class="pane lec"><span class="tag">수업 · Content-based</span>
+      <h3>비슷한 걸 추천</h3>
+      <div class="fx">u(c,s) = score(Profile(c), Content(s))</div>
+      <p>내가 좋아하던 것과 비슷한 콘텐츠를 추천하는 방식. (콘텐츠 특징을 벡터로 뽑아요.)</p>
+    </div>
+    <div class="pane ours"><span class="tag">우리 · cb</span>
+      <h3>코사인으로 ‘결’ 재기</h3>
+      <div class="fx">cb(b,k) = <span class="frac"><span class="n">cos(<span class="hl">u<sub>b</sub></span>,<span class="hl2">v<sub>k</sub></span>)+1</span><span class="d">2</span></span></div>
+      <p>브랜드가 원하는 방향 벡터와 크리에이터 콘텐츠 벡터가 얼마나 같은 방향인지. <code>recommend.py</code> L246.</p>
+    </div>
+  </div>
+  <div class="tip"><b>쉽게 말하면</b> — 코사인 유사도는 ‘두 화살표가 같은 쪽을 보면 1, 직각이면 0’이에요. 그러니까 “브랜드가 원하는 느낌이랑 크리에이터 콘텐츠 느낌이 얼마나 같은 방향이냐”를 0~1로 잰 거예요.</div>
+
+  <div class="pair">
+    <div class="pane lec"><span class="tag">수업 · Collaborative</span>
+      <h3>비슷한 사람 기준</h3>
+      <div class="fx">r<sub>c,s</sub> = k Σ <span class="hl">sim(c,c′)</span>·r<sub>c′,s</sub></div>
+      <p>나랑 취향 비슷한 사람들이 좋아한 걸 추천. 비슷한 사람 찾는 데 KNN을 써요.</p>
+    </div>
+    <div class="pane ours"><span class="tag">우리 · brand_similarity</span>
+      <h3>비슷한 브랜드 기준</h3>
+      <div class="fx"><span class="i">r&#770;</span>(b,k) = <span class="frac"><span class="n">Σ sim(b,b′)·r<sub>b′,k</sub></span><span class="d">Σ |sim(b,b′)|</span></span></div>
+      <p>브랜드끼리 얼마나 비슷한지 코사인으로 구해 <code>brand_similarity</code>에 저장해두고, 그걸로 예측해요.</p>
+    </div>
+  </div>
+  <div class="tip"><b>쉽게 말하면</b> — 넷플릭스가 “너랑 취향 비슷한 사람들이 본 거” 추천해주는 거랑 똑같아요. 우리 버전은 “우리랑 비슷한 브랜드들이 실제로 같이 일해보고 만족했던 크리에이터”를 끌어오는 거고요. 콘텐츠만 보면 놓치는 사람을 이게 잡아줘요.</div>
+
+  <div class="pair">
+    <div class="pane lec"><span class="tag">수업 · Hybrid</span>
+      <h3>둘을 섞기</h3>
+      <p>콘텐츠 방식과 협업 방식을 합치는 게 하이브리드. 수업에선 세 가지 결합 방식을 배웠죠.</p>
+    </div>
+    <div class="pane ours"><span class="tag">우리 · rel</span>
+      <h3>반반 섞어서 ‘적합도’</h3>
+      <div class="fx">rel = λ·<span class="hl">cb</span> + (1−λ)·<span class="hl2">r&#770;</span> &nbsp;(λ=0.5)</div>
+      <p>콘텐츠 점수랑 협업 점수를 반반(λ=0.5)으로 합쳐 ‘브리프 적합도’를 만들고, 이걸로 후보를 추려요.</p>
+    </div>
+  </div>
+
+  <h2>3. 여기가 우리 포인트</h2>
+  <p class="lead">신뢰도를 ‘맥락(C)’으로 — Contextual Modeling</p>
+  <p class="intro">여기가 우리가 수업 내용에 얹은 한 끗이에요. 발표에서 제일 강조할 부분이고요.</p>
+  <div class="star">
+    <span class="badge">수업</span>
+    <p>추천을 보통 ‘사용자 × 아이템’ 2차원으로 보다가, 거기에 <b>맥락(Context)</b>을 한 축 더 끼우는 걸 배웠잖아요.
+    식으로는 차원이 하나 늘어나는 거예요:</p>
+    <div class="fx" style="font-size:13.5px">U × I → R &nbsp;&nbsp;⟹&nbsp;&nbsp; U × I × <span class="hl">C</span> → R</div>
+    <span class="badge">우리 프로젝트</span>
+    <p>우리는 그 ‘맥락 C’ 자리에 <b>신뢰도(성실도)</b>를 넣었어요. 즉 “얼마나 잘 맞나(적합도)” 위에
+    “얼마나 믿을 만한가(신뢰도)”를 한 번 곱해주는 거예요:</p>
+    <div class="fx" style="font-size:14.5px">u(b,k) = rel(b,k) · <span class="hl">Trust(k)</span><sup>β</sup></div>
+    <div class="tip" style="margin:10px 0 4px"><b>쉽게 말하면</b> — β는 ‘신뢰도를 얼마나 세게 볼지’ 다이얼이에요.
+    β=0이면 신뢰도를 아예 무시 → 예전 방식(적합도만)이랑 똑같아지고, β를 키우면 ‘검증된 사람’을 더 위로 올려요.
+    덕분에 <b>“잘 맞긴 한데 못 믿을 사람”</b>을 걸러낼 수 있는 거죠.</div>
+  </div>
+
+  <h2>4. 데이터는 어떻게 짰나 (ERD)</h2>
+  <p class="lead">데이터를 먼저 ERD로 설계했어요</p>
+  <p class="intro">추천 서비스는 데이터 설계가 먼저예요. 우리도 테이블 8개로 데이터를 짰고, 핵심 흐름은 “협업 결과랑 채널 데이터에서 신뢰 신호를 모아 <code>trust_metrics</code>에 저장”하는 거예요.</p>
+  <div class="erd">
+
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: ERD Pages: 1 -->
+<svg
+ viewBox="0.00 0.00 725.00 701.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 697)">
+<title>ERD</title>
+<!-- categories -->
+<g id="node1" class="node">
+<title>categories</title>
+<polygon fill="#1f2a44" stroke="transparent" points="8,-430.5 8,-449.5 86,-449.5 86,-430.5 8,-430.5"/>
+<polygon fill="none" stroke="black" points="8,-430.5 8,-449.5 86,-449.5 86,-430.5 8,-430.5"/>
+<text text-anchor="start" x="16.5" y="-438.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">categories</text>
+<polygon fill="none" stroke="black" points="8,-412.5 8,-430.5 86,-430.5 86,-412.5 8,-412.5"/>
+<text text-anchor="start" x="12" y="-419.3" font-family="DejaVu Sans" font-size="9.00">category_id &#160;PK</text>
+<polygon fill="none" stroke="black" points="8,-394.5 8,-412.5 86,-412.5 86,-394.5 8,-394.5"/>
+<text text-anchor="start" x="12" y="-401.3" font-family="DejaVu Sans" font-size="9.00">name</text>
+<polygon fill="none" stroke="black" points="8,-376.5 8,-394.5 86,-394.5 86,-376.5 8,-376.5"/>
+<text text-anchor="start" x="12" y="-383.3" font-family="DejaVu Sans" font-size="9.00">parent_id &#160;FK</text>
+</g>
+<!-- brands -->
+<g id="node2" class="node">
+<title>brands</title>
+<polygon fill="#1f2a44" stroke="transparent" points="191,-525.5 191,-544.5 269,-544.5 269,-525.5 191,-525.5"/>
+<polygon fill="none" stroke="black" points="191,-525.5 191,-544.5 269,-544.5 269,-525.5 191,-525.5"/>
+<text text-anchor="start" x="210" y="-533.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">brands</text>
+<polygon fill="none" stroke="black" points="191,-507.5 191,-525.5 269,-525.5 269,-507.5 191,-507.5"/>
+<text text-anchor="start" x="195" y="-514.3" font-family="DejaVu Sans" font-size="9.00">brand_id &#160;PK</text>
+<polygon fill="none" stroke="black" points="191,-489.5 191,-507.5 269,-507.5 269,-489.5 191,-489.5"/>
+<text text-anchor="start" x="195" y="-496.3" font-family="DejaVu Sans" font-size="9.00">category_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="191,-471.5 191,-489.5 269,-489.5 269,-471.5 191,-471.5"/>
+<text text-anchor="start" x="195" y="-478.3" font-family="DejaVu Sans" font-size="9.00">target_vector</text>
+<polygon fill="none" stroke="black" points="191,-453.5 191,-471.5 269,-471.5 269,-453.5 191,-453.5"/>
+<text text-anchor="start" x="195" y="-460.3" font-family="DejaVu Sans" font-size="9.00">budget_tier</text>
+</g>
+<!-- categories&#45;&gt;brands -->
+<g id="edge1" class="edge">
+<title>categories&#45;&gt;brands</title>
+<path fill="none" stroke="#5b6270" d="M98.02,-437.27C122.09,-448.7 150.97,-462.43 175.49,-474.07"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="93.15,-439.38 96.58,-432.15 98.03,-432.84 94.59,-440.07 93.15,-439.38"/>
+<polyline fill="none" stroke="#5b6270" points="94.14,-435.42 97.76,-437.14 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="175.72,-474.18 181.4,-480.87 179.33,-475.9 182.94,-477.62 182.94,-477.62 182.94,-477.62 179.33,-475.9 184.49,-474.36 175.72,-474.18 175.72,-474.18"/>
+<text text-anchor="middle" x="138.5" y="-467.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">classifies</text>
+</g>
+<!-- creators -->
+<g id="node3" class="node">
+<title>creators</title>
+<polygon fill="#1f2a44" stroke="transparent" points="191,-354.5 191,-373.5 269,-373.5 269,-354.5 191,-354.5"/>
+<polygon fill="none" stroke="black" points="191,-354.5 191,-373.5 269,-373.5 269,-354.5 191,-354.5"/>
+<text text-anchor="start" x="206" y="-362.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">creators</text>
+<polygon fill="none" stroke="black" points="191,-336.5 191,-354.5 269,-354.5 269,-336.5 191,-336.5"/>
+<text text-anchor="start" x="195" y="-343.3" font-family="DejaVu Sans" font-size="9.00">creator_id &#160;PK</text>
+<polygon fill="none" stroke="black" points="191,-318.5 191,-336.5 269,-336.5 269,-318.5 191,-318.5"/>
+<text text-anchor="start" x="195" y="-325.3" font-family="DejaVu Sans" font-size="9.00">category_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="191,-300.5 191,-318.5 269,-318.5 269,-300.5 191,-300.5"/>
+<text text-anchor="start" x="195" y="-307.3" font-family="DejaVu Sans" font-size="9.00">content_vector</text>
+<polygon fill="none" stroke="black" points="191,-282.5 191,-300.5 269,-300.5 269,-282.5 191,-282.5"/>
+<text text-anchor="start" x="195" y="-289.3" font-family="DejaVu Sans" font-size="9.00">country</text>
+</g>
+<!-- categories&#45;&gt;creators -->
+<g id="edge2" class="edge">
+<title>categories&#45;&gt;creators</title>
+<path fill="none" stroke="#5b6270" d="M98.02,-390.01C122.09,-378.71 150.97,-365.14 175.49,-353.63"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="96.57,-395.11 93.17,-387.87 94.61,-387.19 98.02,-394.43 96.57,-395.11"/>
+<polyline fill="none" stroke="#5b6270" points="94.14,-391.83 97.76,-390.13 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="175.7,-353.53 184.47,-353.39 179.32,-351.83 182.94,-350.13 182.94,-350.13 182.94,-350.13 179.32,-351.83 181.41,-346.87 175.7,-353.53 175.7,-353.53"/>
+<text text-anchor="middle" x="138.5" y="-382.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">classifies</text>
+</g>
+<!-- campaigns -->
+<g id="node5" class="node">
+<title>campaigns</title>
+<polygon fill="#1f2a44" stroke="transparent" points="403.5,-534.5 403.5,-553.5 487.5,-553.5 487.5,-534.5 403.5,-534.5"/>
+<polygon fill="none" stroke="black" points="403.5,-534.5 403.5,-553.5 487.5,-553.5 487.5,-534.5 403.5,-534.5"/>
+<text text-anchor="start" x="414.5" y="-542.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">campaigns</text>
+<polygon fill="none" stroke="black" points="403.5,-516.5 403.5,-534.5 487.5,-534.5 487.5,-516.5 403.5,-516.5"/>
+<text text-anchor="start" x="407.5" y="-523.3" font-family="DejaVu Sans" font-size="9.00">campaign_id &#160;PK</text>
+<polygon fill="none" stroke="black" points="403.5,-498.5 403.5,-516.5 487.5,-516.5 487.5,-498.5 403.5,-498.5"/>
+<text text-anchor="start" x="407.5" y="-505.3" font-family="DejaVu Sans" font-size="9.00">brand_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="403.5,-480.5 403.5,-498.5 487.5,-498.5 487.5,-480.5 403.5,-480.5"/>
+<text text-anchor="start" x="407.5" y="-487.3" font-family="DejaVu Sans" font-size="9.00">creator_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="403.5,-462.5 403.5,-480.5 487.5,-480.5 487.5,-462.5 403.5,-462.5"/>
+<text text-anchor="start" x="407.5" y="-469.3" font-family="DejaVu Sans" font-size="9.00">start_date</text>
+<polygon fill="none" stroke="black" points="403.5,-444.5 403.5,-462.5 487.5,-462.5 487.5,-444.5 403.5,-444.5"/>
+<text text-anchor="start" x="407.5" y="-451.3" font-family="DejaVu Sans" font-size="9.00">fee</text>
+</g>
+<!-- brands&#45;&gt;campaigns -->
+<g id="edge3" class="edge">
+<title>brands&#45;&gt;campaigns</title>
+<path fill="none" stroke="#5b6270" d="M281.2,-499.5C312.9,-499.5 353.95,-499.5 386.96,-499.5"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="277.86,-503.5 277.86,-495.5 279.46,-495.5 279.46,-503.5 277.86,-503.5"/>
+<polyline fill="none" stroke="#5b6270" points="277.06,-499.5 281.06,-499.5 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="387.17,-499.5 395.17,-503.1 391.17,-499.5 395.17,-499.5 395.17,-499.5 395.17,-499.5 391.17,-499.5 395.17,-495.9 387.17,-499.5 387.17,-499.5"/>
+<text text-anchor="middle" x="328" y="-502.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">runs</text>
+</g>
+<!-- brand_similarity -->
+<g id="node8" class="node">
+<title>brand_similarity</title>
+<polygon fill="#7a8190" stroke="transparent" points="394.5,-669.5 394.5,-688.5 496.5,-688.5 496.5,-669.5 394.5,-669.5"/>
+<polygon fill="none" stroke="black" points="394.5,-669.5 394.5,-688.5 496.5,-688.5 496.5,-669.5 394.5,-669.5"/>
+<text text-anchor="start" x="398.5" y="-677.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">brand_similarity</text>
+<polygon fill="none" stroke="black" points="394.5,-651.5 394.5,-669.5 496.5,-669.5 496.5,-651.5 394.5,-651.5"/>
+<text text-anchor="start" x="398.5" y="-658.3" font-family="DejaVu Sans" font-size="9.00">b1 &#160;FK</text>
+<polygon fill="none" stroke="black" points="394.5,-633.5 394.5,-651.5 496.5,-651.5 496.5,-633.5 394.5,-633.5"/>
+<text text-anchor="start" x="398.5" y="-640.3" font-family="DejaVu Sans" font-size="9.00">b2 &#160;FK</text>
+<polygon fill="none" stroke="black" points="394.5,-615.5 394.5,-633.5 496.5,-633.5 496.5,-615.5 394.5,-615.5"/>
+<text text-anchor="start" x="398.5" y="-622.3" font-family="DejaVu Sans" font-size="9.00">cosine_sim</text>
+<polygon fill="none" stroke="black" points="394.5,-597.5 394.5,-615.5 496.5,-615.5 496.5,-597.5 394.5,-597.5"/>
+<text text-anchor="start" x="398.5" y="-604.3" font-family="DejaVu Sans" font-size="9.00">common_creators</text>
+</g>
+<!-- brands&#45;&gt;brand_similarity -->
+<g id="edge8" class="edge">
+<title>brands&#45;&gt;brand_similarity</title>
+<path fill="none" stroke="#5b6270" stroke-dasharray="5,2" d="M280.48,-532.87C309.97,-552.76 347.74,-578.24 379.6,-599.73"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="275.49,-534.33 279.96,-527.7 281.29,-528.59 276.82,-535.23 275.49,-534.33"/>
+<polyline fill="none" stroke="#5b6270" points="277.06,-530.57 280.38,-532.81 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="379.67,-599.77 384.29,-607.23 382.99,-602.01 386.3,-604.25 386.3,-604.25 386.3,-604.25 382.99,-602.01 388.31,-601.26 379.67,-599.77 379.67,-599.77"/>
+<text text-anchor="middle" x="328" y="-583.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">b1 / b2</text>
+</g>
+<!-- channels -->
+<g id="node4" class="node">
+<title>channels</title>
+<polygon fill="#1f2a44" stroke="transparent" points="408.5,-93.5 408.5,-112.5 483.5,-112.5 483.5,-93.5 408.5,-93.5"/>
+<polygon fill="none" stroke="black" points="408.5,-93.5 408.5,-112.5 483.5,-112.5 483.5,-93.5 408.5,-93.5"/>
+<text text-anchor="start" x="421" y="-101.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">channels</text>
+<polygon fill="none" stroke="black" points="408.5,-75.5 408.5,-93.5 483.5,-93.5 483.5,-75.5 408.5,-75.5"/>
+<text text-anchor="start" x="412.5" y="-82.3" font-family="DejaVu Sans" font-size="9.00">channel_id &#160;PK</text>
+<polygon fill="none" stroke="black" points="408.5,-57.5 408.5,-75.5 483.5,-75.5 483.5,-57.5 408.5,-57.5"/>
+<text text-anchor="start" x="412.5" y="-64.3" font-family="DejaVu Sans" font-size="9.00">creator_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="408.5,-39.5 408.5,-57.5 483.5,-57.5 483.5,-39.5 408.5,-39.5"/>
+<text text-anchor="start" x="412.5" y="-46.3" font-family="DejaVu Sans" font-size="9.00">subscribers</text>
+<polygon fill="none" stroke="black" points="408.5,-21.5 408.5,-39.5 483.5,-39.5 483.5,-21.5 408.5,-21.5"/>
+<text text-anchor="start" x="412.5" y="-28.3" font-family="DejaVu Sans" font-size="9.00">dau, mau</text>
+<polygon fill="none" stroke="black" points="408.5,-3.5 408.5,-21.5 483.5,-21.5 483.5,-3.5 408.5,-3.5"/>
+<text text-anchor="start" x="412.5" y="-10.3" font-family="DejaVu Sans" font-size="9.00">cadence_cv</text>
+</g>
+<!-- creators&#45;&gt;channels -->
+<g id="edge6" class="edge">
+<title>creators&#45;&gt;channels</title>
+<path fill="none" stroke="#5b6270" d="M268.68,-275.49C279.31,-260.81 290.99,-244.94 302,-230.5 335.17,-187.01 344.03,-176.56 379,-134.5 384.01,-128.47 389.29,-122.22 394.57,-116"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="270,-280.5 263.52,-275.81 264.45,-274.51 270.94,-279.2 270,-280.5"/>
+<polyline fill="none" stroke="#5b6270" points="266.29,-278.8 268.63,-275.56 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="394.67,-115.89 402.6,-112.14 397.26,-112.84 399.86,-109.8 399.86,-109.8 399.86,-109.8 397.26,-112.84 397.12,-107.47 394.67,-115.89 394.67,-115.89"/>
+<text text-anchor="middle" x="328" y="-233.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">owns</text>
+</g>
+<!-- creators&#45;&gt;campaigns -->
+<g id="edge4" class="edge">
+<title>creators&#45;&gt;campaigns</title>
+<path fill="none" stroke="#5b6270" d="M280.36,-368.04C312.69,-393.93 355.01,-427.83 388.58,-454.71"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="275.19,-369.02 280.19,-362.77 281.44,-363.77 276.44,-370.02 275.19,-369.02"/>
+<polyline fill="none" stroke="#5b6270" points="277.06,-365.39 280.19,-367.89 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="388.93,-454.99 392.92,-462.8 392.05,-457.49 395.17,-459.99 395.17,-459.99 395.17,-459.99 392.05,-457.49 397.42,-457.18 388.93,-454.99 388.93,-454.99"/>
+<text text-anchor="middle" x="328" y="-427.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">joins</text>
+</g>
+<!-- trust_metrics -->
+<g id="node7" class="node">
+<title>trust_metrics</title>
+<polygon fill="#1f2a44" stroke="transparent" points="400.5,-381.5 400.5,-400.5 490.5,-400.5 490.5,-381.5 400.5,-381.5"/>
+<polygon fill="none" stroke="black" points="400.5,-381.5 400.5,-400.5 490.5,-400.5 490.5,-381.5 400.5,-381.5"/>
+<text text-anchor="start" x="407.5" y="-389.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">trust_metrics</text>
+<polygon fill="none" stroke="black" points="400.5,-363.5 400.5,-381.5 490.5,-381.5 490.5,-363.5 400.5,-363.5"/>
+<text text-anchor="start" x="404.5" y="-370.3" font-family="DejaVu Sans" font-size="9.00">creator_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="400.5,-345.5 400.5,-363.5 490.5,-363.5 490.5,-345.5 400.5,-345.5"/>
+<text text-anchor="start" x="404.5" y="-352.3" font-family="DejaVu Sans" font-size="9.00">deadline_rate</text>
+<polygon fill="none" stroke="black" points="400.5,-327.5 400.5,-345.5 490.5,-345.5 490.5,-327.5 400.5,-327.5"/>
+<text text-anchor="start" x="404.5" y="-334.3" font-family="DejaVu Sans" font-size="9.00">completion_rate</text>
+<polygon fill="none" stroke="black" points="400.5,-309.5 400.5,-327.5 490.5,-327.5 490.5,-309.5 400.5,-309.5"/>
+<text text-anchor="start" x="404.5" y="-316.3" font-family="DejaVu Sans" font-size="9.00">comm_score</text>
+<polygon fill="none" stroke="black" points="400.5,-291.5 400.5,-309.5 490.5,-309.5 490.5,-291.5 400.5,-291.5"/>
+<text text-anchor="start" x="404.5" y="-298.3" font-family="DejaVu Sans" font-size="9.00">consistency</text>
+<polygon fill="none" stroke="black" points="400.5,-273.5 400.5,-291.5 490.5,-291.5 490.5,-273.5 400.5,-273.5"/>
+<text text-anchor="start" x="404.5" y="-280.3" font-family="DejaVu Sans" font-size="9.00">engagement_stab</text>
+<polygon fill="none" stroke="black" points="400.5,-255.5 400.5,-273.5 490.5,-273.5 490.5,-255.5 400.5,-255.5"/>
+<text text-anchor="start" x="404.5" y="-262.3" font-family="DejaVu Sans" font-size="9.00">trust_score</text>
+</g>
+<!-- creators&#45;&gt;trust_metrics -->
+<g id="edge7" class="edge">
+<title>creators&#45;&gt;trust_metrics</title>
+<path fill="none" stroke="#5b6270" d="M281.08,-328.5C311.87,-328.5 351.5,-328.5 384.03,-328.5"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="277.86,-332.5 277.86,-324.5 279.46,-324.5 279.46,-332.5 277.86,-332.5"/>
+<polyline fill="none" stroke="#5b6270" points="277.06,-328.5 281.06,-328.5 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="384.14,-328.5 392.14,-332.1 388.14,-328.5 392.14,-328.5 392.14,-328.5 392.14,-328.5 388.14,-328.5 392.14,-324.9 384.14,-328.5 384.14,-328.5"/>
+<text text-anchor="middle" x="328" y="-331.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">scored</text>
+</g>
+<!-- creator_latent -->
+<g id="node9" class="node">
+<title>creator_latent</title>
+<polygon fill="#7a8190" stroke="transparent" points="387.5,-192.5 387.5,-211.5 504.5,-211.5 504.5,-192.5 387.5,-192.5"/>
+<polygon fill="none" stroke="black" points="387.5,-192.5 387.5,-211.5 504.5,-211.5 504.5,-192.5 387.5,-192.5"/>
+<text text-anchor="start" x="406" y="-200.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">creator_latent</text>
+<polygon fill="none" stroke="black" points="387.5,-174.5 387.5,-192.5 504.5,-192.5 504.5,-174.5 387.5,-174.5"/>
+<text text-anchor="start" x="391.5" y="-181.3" font-family="DejaVu Sans" font-size="9.00">creator_id &#160;FK</text>
+<polygon fill="none" stroke="black" points="387.5,-156.5 387.5,-174.5 504.5,-174.5 504.5,-156.5 387.5,-156.5"/>
+<text text-anchor="start" x="391.5" y="-163.3" font-family="DejaVu Sans" font-size="9.00">true_tau &#160;(synthetic GT)</text>
+</g>
+<!-- creators&#45;&gt;creator_latent -->
+<g id="edge9" class="edge">
+<title>creators&#45;&gt;creator_latent</title>
+<path fill="none" stroke="#5b6270" stroke-dasharray="5,2" d="M280.45,-295.15C314.56,-272.14 359.76,-241.66 394.08,-218.51"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="279.96,-300.3 275.49,-293.67 276.82,-292.77 281.29,-299.41 279.96,-300.3"/>
+<polyline fill="none" stroke="#5b6270" points="277.06,-297.43 280.38,-295.19 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="394.88,-213.14 399.36,-219.77 398.03,-220.67 393.56,-214.04 394.88,-213.14"/>
+<polyline fill="none" stroke="#5b6270" points="397.78,-216.01 394.47,-218.25 "/>
+<text text-anchor="middle" x="328" y="-281.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">ground truth</text>
+</g>
+<!-- outcomes -->
+<g id="node6" class="node">
+<title>outcomes</title>
+<polygon fill="#1f2a44" stroke="transparent" points="609,-543.5 609,-562.5 709,-562.5 709,-543.5 609,-543.5"/>
+<polygon fill="none" stroke="black" points="609,-543.5 609,-562.5 709,-562.5 709,-543.5 609,-543.5"/>
+<text text-anchor="start" x="631.5" y="-551.5" font-family="DejaVu Sans" font-weight="bold" font-size="10.00" fill="white">outcomes</text>
+<polygon fill="none" stroke="black" points="609,-525.5 609,-543.5 709,-543.5 709,-525.5 609,-525.5"/>
+<text text-anchor="start" x="613" y="-532.3" font-family="DejaVu Sans" font-size="9.00">campaign_id &#160;FK·UQ</text>
+<polygon fill="none" stroke="black" points="609,-507.5 609,-525.5 709,-525.5 709,-507.5 609,-507.5"/>
+<text text-anchor="start" x="613" y="-514.3" font-family="DejaVu Sans" font-size="9.00">total, delivered</text>
+<polygon fill="none" stroke="black" points="609,-489.5 609,-507.5 709,-507.5 709,-489.5 609,-489.5"/>
+<text text-anchor="start" x="613" y="-496.3" font-family="DejaVu Sans" font-size="9.00">on_time</text>
+<polygon fill="none" stroke="black" points="609,-471.5 609,-489.5 709,-489.5 709,-471.5 609,-471.5"/>
+<text text-anchor="start" x="613" y="-478.3" font-family="DejaVu Sans" font-size="9.00">comm_rating</text>
+<polygon fill="none" stroke="black" points="609,-453.5 609,-471.5 709,-471.5 709,-453.5 609,-453.5"/>
+<text text-anchor="start" x="613" y="-460.3" font-family="DejaVu Sans" font-size="9.00">satisfaction</text>
+<polygon fill="none" stroke="black" points="609,-435.5 609,-453.5 709,-453.5 709,-435.5 609,-435.5"/>
+<text text-anchor="start" x="613" y="-442.3" font-family="DejaVu Sans" font-size="9.00">success</text>
+</g>
+<!-- campaigns&#45;&gt;outcomes -->
+<g id="edge5" class="edge">
+<title>campaigns&#45;&gt;outcomes</title>
+<path fill="none" stroke="#5b6270" d="M499.66,-499.5C529.22,-499.5 566.13,-499.5 596.87,-499.5"/>
+<polygon fill="#5b6270" stroke="#5b6270" points="496.35,-503.5 496.35,-495.5 497.95,-495.5 497.95,-503.5 496.35,-503.5"/>
+<polyline fill="none" stroke="#5b6270" points="495.55,-499.5 499.55,-499.5 "/>
+<polygon fill="#5b6270" stroke="#5b6270" points="600.17,-495.5 600.17,-503.5 598.57,-503.5 598.57,-495.5 600.17,-495.5"/>
+<polyline fill="none" stroke="#5b6270" points="600.97,-499.5 596.97,-499.5 "/>
+<text text-anchor="middle" x="556.5" y="-502.1" font-family="DejaVu Sans" font-size="8.00" fill="#5b6270">produces</text>
+</g>
+</g>
+</svg>
+</div>
+  <p class="cap">한쪽 끝(│)=1개, 갈래(crow’s foot)=여러 개를 뜻해요. 신뢰 신호는 <code>outcomes</code>(마감·소통·이행)와
+  <code>channels</code>(DAU/MAU)에서 모여 <code>trust_metrics</code>로, 협업 신호는 <code>brand_similarity</code>로 들어가요.
+  <code>v_rating_matrix</code> 뷰가 ‘브랜드 × 크리에이터 평점표’를 만들어줘요.</p>
+
+  <h2>5. SQL은 뭘 하나</h2>
+  <p class="lead">SQL로 뽑아서 정기 갱신</p>
+  <p class="intro">데이터에서 추천에 쓸 값을 SQL로 뽑아 정기적으로 갱신하는 부분이에요. 쿼리 3개가 각각 이런 역할을 해요. 각 쿼리 위에 ‘이게 뭐 하는 건지’ 한 줄로 적어뒀어요.</p>
+
+  <div class="sqltitle"><span class="s">① 신뢰도 집계</span> 크리에이터마다 신뢰 점수 계산</div>
+  <p class="sqlsay">협업 결과·채널 데이터를 모아 마감·소통·이행·지속·점착에 가중치를 줘서 한 점수로 합쳐요.</p>
+  <pre class="sql"><span class="kw">INSERT INTO</span> trust_metrics (creator_id, period, deadline_rate, comm_score,
+                           completion_rate, consistency, engagement_stab, trust_score)
+<span class="kw">SELECT</span> creator_id, <span class="fn">'2026-Q2'</span>, deadline_rate, comm_score, completion_rate,
+       consistency, engagement_stab,
+       0.30*deadline_rate + 0.20*comm_score + 0.25*completion_rate
+     + 0.15*consistency   + 0.10*engagement_stab          <span class="kw">AS</span> trust_score
+<span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> c.creator_id,
+         <span class="fn">SUM</span>(o.on_time)::float   / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> deadline_rate,
+         <span class="fn">AVG</span>(o.comm_rating) / 5.0                          <span class="kw">AS</span> comm_score,
+         <span class="fn">SUM</span>(o.delivered)::float / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(o.total),0) <span class="kw">AS</span> completion_rate,
+         <span class="fn">AVG</span>(1 - ch.cadence_cv)                            <span class="kw">AS</span> consistency,
+         <span class="fn">AVG</span>(ch.dau::float / <span class="fn">NULLIF</span>(ch.mau,0))             <span class="kw">AS</span> engagement_stab
+  <span class="kw">FROM</span> creators c
+  <span class="kw">JOIN</span> channels  ch <span class="kw">ON</span> ch.creator_id = c.creator_id
+  <span class="kw">JOIN</span> campaigns cm <span class="kw">ON</span> cm.creator_id = c.creator_id
+  <span class="kw">JOIN</span> outcomes  o  <span class="kw">ON</span> o.campaign_id = cm.campaign_id
+  <span class="kw">GROUP BY</span> c.creator_id
+) s;</pre>
+
+  <div class="sqltitle"><span class="s">② 협업 유사도</span> 브랜드끼리 얼마나 비슷한지</div>
+  <p class="sqlsay">같은 크리에이터를 써본 두 브랜드의 평점이 비슷하면, 그 두 브랜드는 ‘취향이 비슷’한 거예요.</p>
+  <pre class="sql"><span class="kw">INSERT INTO</span> brand_similarity (b1, b2, cosine_sim, common_creators)
+<span class="kw">SELECT</span> a.brand_id, b.brand_id,
+       <span class="fn">SUM</span>(a.rating * b.rating)
+         / (<span class="fn">sqrt</span>(<span class="fn">SUM</span>(a.rating*a.rating)) * <span class="fn">sqrt</span>(<span class="fn">SUM</span>(b.rating*b.rating))) <span class="kw">AS</span> cosine_sim,
+       <span class="fn">COUNT</span>(*) <span class="kw">AS</span> common_creators
+<span class="kw">FROM</span> v_rating_matrix a
+<span class="kw">JOIN</span> v_rating_matrix b <span class="kw">ON</span> a.creator_id = b.creator_id <span class="kw">AND</span> a.brand_id &lt; b.brand_id
+<span class="kw">GROUP BY</span> a.brand_id, b.brand_id
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) &gt;= 2;   <span class="cm">-- 같이 써본 크리에이터가 2명 이상일 때만</span></pre>
+
+  <div class="sqltitle"><span class="s">③ 협업필터 예측</span> 비슷한 브랜드들의 평가로 점수 매기기</div>
+  <p class="sqlsay">우리랑 비슷한 브랜드들이 이 크리에이터를 얼마나 만족했는지를 유사도로 가중평균해요.</p>
+  <pre class="sql"><span class="kw">SELECT</span> v.creator_id,
+       <span class="fn">SUM</span>(s.cosine_sim * v.rating)
+         / <span class="fn">NULLIF</span>(<span class="fn">SUM</span>(s.cosine_sim), 0) / 5.0 <span class="kw">AS</span> cf_score
+<span class="kw">FROM</span> brand_similarity s
+<span class="kw">JOIN</span> v_rating_matrix v <span class="kw">ON</span> v.brand_id = s.b2
+<span class="kw">WHERE</span> s.b1 = :brand_id <span class="kw">AND</span> s.cosine_sim &gt; 0
+<span class="kw">GROUP BY</span> v.creator_id
+<span class="kw">ORDER BY</span> cf_score <span class="kw">DESC</span>;</pre>
+  <p class="cap">최종 순위는 코드에서 rel = λ·적합도 + (1−λ)·cf_score 로 합치고, 거기에 u = rel · trust_score<sup>β</sup>를 곱해 정해요.</p>
+
+  <h2>6. 평가는 어떻게 보여줄까</h2>
+  <p class="lead">성능은 RIG · A/B Test로</p>
+  <div class="pair">
+    <div class="pane lec"><span class="tag">지표</span>
+      <h3>RIG / Cross-Entropy</h3>
+      <div class="fx">RIG = IG / H(p&#772;),&nbsp; IG = H(p&#772;) − CE</div>
+      <p>피처를 하나씩 추가하면서 예측이 얼마나 좋아지는지 보는 지표. P(C)→P(C|A)→P(C|A,D,S).</p>
+    </div>
+    <div class="pane ours"><span class="tag">우리 계획</span>
+      <h3>신뢰도 넣기 전/후</h3>
+      <p>“적합도만 쓴 모델” vs “적합도+<b>신뢰도</b> 모델”의 RIG·logloss를 비교해서, 신뢰도가 진짜 도움이 되는지 보여줄 거예요.
+      온라인이면 A/B Test로 협업 완료율을 비교하고요.</p>
+    </div>
+  </div>
+  <div class="tip"><b>쉽게 말하면</b> — RIG는 “이 피처 하나 더 넣었더니 예측이 얼마나 똑똑해졌나”를 숫자로 보는 거예요. 우리가 ‘신뢰도’를 넣은 게 헛수고가 아니란 걸 이걸로 증명하는 거죠.</div>
+
+  <h2>전체 매핑 표</h2>
+  <p class="lead">개념 ↔ 코드, 한 장으로</p>
+  <table class="map">
+    <tr><th>개념</th><th>우리 구현</th></tr>
+    <tr><td>효용 최대화 arg max u(c,s)</td><td><code>recommend()</code> 정렬</td></tr>
+    <tr><td>Content-based</td><td><code>cb</code> 코사인</td></tr>
+    <tr><td>Collaborative · sim, r&#770;</td><td><code>build_brand_similarity</code>, <code>cf_predict</code></td></tr>
+    <tr><td>Hybrid</td><td><code>rel = λ·cb+(1−λ)·cf</code></td></tr>
+    <tr><td>Contextual Modeling U×I×C→R</td><td><code>utility = rel·trust<sup>β</sup></code> (우리 포인트)</td></tr>
+    <tr><td>상품 메타정보 · AI feature</td><td>콘텐츠 벡터 <code>content_vector</code></td></tr>
+    <tr><td>비즈니스 목표 가중치</td><td>신뢰 가중치 <code>β</code> (안전/도전)</td></tr>
+    <tr><td>ERD 기반 데이터 설계</td><td>테이블 8개 + 뷰</td></tr>
+    <tr><td>SQL 추출 → 정기 갱신</td><td>신뢰도 집계·유사도 적재 쿼리</td></tr>
+    <tr><td>RIG / Cross-Entropy</td><td>신뢰도 전/후 비교</td></tr>
+    <tr><td>A/B Test 성과 평가</td><td>협업 완료율 A/B 설계</td></tr>
+  </table>
+
+  <h2>발표 때 이 세 줄만 기억하면 돼요</h2>
+  <div class="points">
+    <div class="pt"><b>① 추천 이론을 그대로 구현했어요.</b> 효용 최대화, 세 방법론, 평가까지 코드에 그대로 들어가 있어요.</div>
+    <div class="pt"><b>② 우리가 더한 건 딱 하나, 신뢰도(Contextual).</b> ‘잘 맞긴 한데 못 믿을 사람’을 걸러내는 부분이에요.</div>
+    <div class="pt"><b>③ ERD랑 SQL까지 다 있어요.</b> 데이터를 ERD로 설계하고 SQL로 뽑는 흐름을 실제로 보여주는 거고요.</div>
+  </div>
+
+  <div class="concl">
+    <div class="k">한 문장으로</div>
+    <p>이 프로젝트는 추천시스템 이론을 실제로 만들어 본 거고,
+    우리가 보탠 건 ‘신뢰도로 리스크까지 본다’ 딱 하나예요.</p>
+  </div>
+
+  <footer>Vouch — 팀 공유용 정리 · 데이터는 가상 · 추천 계산은 recommend.py 기준</footer>
+</div>
+</body>
+</html>
