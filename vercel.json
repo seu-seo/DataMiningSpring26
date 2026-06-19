@@ -4,5 +4,13 @@
   "routes": [
     { "src": "/", "dest": "/ui-ux-demo/index.html" },
     { "src": "/(.*)", "dest": "/ui-ux-demo/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    }
   ]
 }
