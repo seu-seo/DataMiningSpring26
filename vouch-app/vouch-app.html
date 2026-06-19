@@ -612,7 +612,7 @@ function renderSimilarBrand(){
     const flag=c.warn?`<div class="flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>${c.warn}</div>`:'';
     const badgeColor=idx===0?'#db2777':'#a78bfa';
     const badgeBg=idx===0?'rgba(219,39,119,.2)':'rgba(124,58,237,.18)';
-    const badgeLab=isCF?'CF 검증':'적합도 기반';
+    const badgeLab=isCF?'Vouch 검증':'적합도 기반';
     const ringBg=idx===0?`conic-gradient(#7c3aed 0%, #db2777 ${cfPct}%, rgba(255,255,255,.06) 0)`:`conic-gradient(${badgeColor} ${cfPct}%, rgba(255,255,255,.06) 0)`;
     const innerColor=idx===0?'#fff':badgeColor;
     const tierStyle=idx===0?'background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff':`color:${badgeColor};background:${badgeBg}`;
